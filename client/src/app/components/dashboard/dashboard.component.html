@@ -1,0 +1,87 @@
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-md-12">
+      <h1 class="mb-4">Welcome, {{ currentUser?.username || 'User' }}!</h1>
+      
+      <div class="row mb-5">
+        <div class="col-md-4 mb-4">
+          <div class="card dashboard-card">
+            <div class="card-body text-center">
+              <i class="bi bi-search fs-1 text-primary mb-3"></i>
+              <h3 class="card-title">Find Recipes</h3>
+              <p class="card-text">Search for recipes based on ingredients, dietary preferences, and more.</p>
+              <a routerLink="/recipes/search" class="btn btn-primary mt-3">Search Recipes</a>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+          <div class="card dashboard-card">
+            <div class="card-body text-center">
+              <i class="bi bi-star fs-1 text-primary mb-3"></i>
+              <h3 class="card-title">Saved Recipes</h3>
+              <p class="card-text">View your collection of saved favorite recipes.</p>
+              <a routerLink="/recipes/saved" class="btn btn-primary mt-3">My Recipes</a>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+          <div class="card dashboard-card">
+            <div class="card-body text-center">
+              <i class="bi bi-calendar-week fs-1 text-primary mb-3"></i>
+              <h3 class="card-title">Meal Planner</h3>
+              <p class="card-text">Plan your meals for the week ahead.</p>
+              <a routerLink="/meal-plans" class="btn btn-primary mt-3">Plan Meals</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card shadow-sm">
+            <div class="card-body">
+              <h2 class="mb-3">Getting Started</h2>
+              <div class="row">
+                <div class="col-md-4 mb-3">
+                  <div class="d-flex">
+                    <div class="flex-shrink-0">
+                      <div class="step-circle">1</div>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                      <h4>Search Recipes</h4>
+                      <p>Search for recipes based on ingredients you have or dietary preferences.</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <div class="d-flex">
+                    <div class="flex-shrink-0">
+                      <div class="step-circle">2</div>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                      <h4>Save Favorites</h4>
+                      <p>Save recipes you like to your personal collection for easy access.</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <div class="d-flex">
+                    <div class="flex-shrink-0">
+                      <div class="step-circle">3</div>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                      <h4>Plan Your Week</h4>
+                      <p>Add recipes to your weekly meal plan to stay organized.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

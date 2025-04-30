@@ -1,0 +1,217 @@
+/* Global styles */
+:root {
+  --primary-color: #faf0f1;
+  --secondary-color: #f8f9fa;
+  --text-color: #333;
+  --accent-color: #fce0e1;
+  --border-color: #dee2e6;
+  --success-color: #28a745;
+  --warning-color: #ffc107;
+  --danger-color: #dc3545;
+  --accent-pink: #ff6b6b;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--text-color);
+  background-color: #fff;
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* Handle text contrast on pink background */
+.bg-primary h1, .bg-primary h2, .bg-primary h3, .bg-primary h4, .bg-primary h5, .bg-primary h6,
+.bg-primary .nav-link, .bg-primary .text-white {
+  color: white !important;
+}
+
+.card-header.bg-primary, .btn-primary {
+  color: white !important;
+}
+
+.container {
+  padding: 1.5rem;
+}
+
+/* Card styling */
+.card {
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease;
+  overflow: hidden;
+  height: 100%;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.card-header.bg-primary {
+  background-color: var(--accent-pink) !important;
+  color: white !important;
+  font-weight: 600;
+}
+
+.card-body {
+  background-color: white;
+}
+
+/* Button styling */
+.btn-primary {
+  background-color: var(--accent-pink);
+  border-color: var(--accent-pink);
+  color: white;
+  font-weight: 500;
+}
+
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active {
+  background-color: #e45a5a !important; /* Darker shade for better contrast */
+  border-color: #e45a5a !important;
+  color: white !important;
+}
+
+.btn-outline-primary {
+  color: var(--accent-pink);
+  border-color: var(--accent-pink);
+}
+
+.btn-outline-primary:hover, .btn-outline-primary:focus, .btn-outline-primary:active {
+  background-color: var(--accent-pink) !important;
+  border-color: var(--accent-pink) !important;
+  color: white !important;
+}
+
+/* Header styling */
+h1, h2, h3, h4, h5, h6 {
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+/* Form styling */
+.form-control:focus {
+  border-color: var(--accent-pink);
+  box-shadow: 0 0 0 0.2rem rgba(255, 107, 107, 0.25);
+}
+
+/* Table styling */
+.table {
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.table thead th {
+  background-color: #333;
+  color: white;
+  border-bottom: 2px solid var(--accent-pink);
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: rgba(250, 240, 241, 0.3);
+}
+
+/* Utility classes */
+.text-primary {
+  color: var(--accent-pink) !important;
+}
+
+.bg-primary {
+  background-color: var(--accent-pink) !important;
+  color: white !important;
+}
+
+/* Pagination styling */
+.pagination {
+  margin-top: 2rem;
+}
+
+.pagination .page-link {
+  color: #333;
+  background-color: white;
+  border-color: #ddd;
+  font-weight: 600;
+  padding: 0.5rem 0.75rem;
+}
+
+.pagination .page-item.active .page-link {
+  background-color: var(--accent-pink);
+  border-color: var(--accent-pink);
+  color: white;
+}
+
+.pagination .page-item.disabled .page-link {
+  color: #888;
+  background-color: #f8f8f8;
+}
+
+.pagination .page-link:hover:not(.disabled) {
+  background-color: #f0f0f0;
+  color: var(--accent-pink);
+  border-color: #ddd;
+}
+
+.bg-light {
+  background-color: var(--secondary-color) !important;
+}
+
+/* Recipe card specific styling */
+.recipe-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.recipe-card .card-img-top {
+  height: 180px;
+  object-fit: cover;
+}
+
+.recipe-card .card-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.recipe-card .card-title {
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.recipe-card .card-footer {
+  background-color: transparent;
+  border-top: 1px solid var(--border-color);
+  padding-top: 0.75rem;
+}
+
+/* Meal planner grid */
+.meal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-gap: 1rem;
+}
+
+@media (max-width: 992px) {
+  .meal-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 576px) {
+  .meal-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Loading spinner */
+.loader {
+  border: 4px solid rgba(255, 107, 107, 0.1);
+  border-radius: 50%;
+  border-top: 4px solid var(--accent-pink);
+  width: 30px;
+  height: 30px;
+  animation: spin 1s linear infinite;
+  margin: 20px auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

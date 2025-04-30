@@ -1,0 +1,31 @@
+.preferences-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+  
+  @media (min-width: 992px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .preference-item {
+    margin-bottom: 0.5rem;
+  }
+}
+
+.back-link {
+  font-weight: 600;
+  padding: 8px 16px;
+  border-color: #999;
+  color: #333;
+  background-color: #f8f8f8;
+  
+  &:hover {
+    background-color: #e9e9e9;
+    color: var(--accent-pink);
+    border-color: var(--accent-pink);
+  }
+  
+  i {
+    margin-right: 5px;
+  }
+}

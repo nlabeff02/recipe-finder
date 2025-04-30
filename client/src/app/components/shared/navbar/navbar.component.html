@@ -1,0 +1,52 @@
+<nav class="navbar navbar-expand-lg sticky-top">
+  <div class="container">
+    <a class="navbar-brand" routerLink="/dashboard">
+      <img src="assets/logo.png" alt="Recipe Finder Logo" class="brand-logo">
+    </a>
+    
+    <button class="navbar-toggler" type="button" (click)="isMenuCollapsed = !isMenuCollapsed"
+      [attr.aria-expanded]="!isMenuCollapsed" aria-controls="navbarNav" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    
+    <div class="collapse navbar-collapse" [class.show]="!isMenuCollapsed" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item" *ngIf="currentUser">
+          <a class="nav-link" routerLink="/dashboard" routerLinkActive="active" (click)="isMenuCollapsed = true">Dashboard</a>
+        </li>
+        <li class="nav-item" *ngIf="currentUser">
+          <a class="nav-link" routerLink="/recipes/search" routerLinkActive="active" (click)="isMenuCollapsed = true">Search Recipes</a>
+        </li>
+        <li class="nav-item" *ngIf="currentUser">
+          <a class="nav-link" routerLink="/recipes/saved" routerLinkActive="active" (click)="isMenuCollapsed = true">Saved Recipes</a>
+        </li>
+        <li class="nav-item" *ngIf="currentUser">
+          <a class="nav-link" routerLink="/meal-plans" routerLinkActive="active" (click)="isMenuCollapsed = true">Meal Planner</a>
+        </li>
+        <li class="nav-item" *ngIf="currentUser && isAdmin">
+          <a class="nav-link" routerLink="/admin" routerLinkActive="active" (click)="isMenuCollapsed = true">Admin</a>
+        </li>
+      </ul>
+      
+      <ul class="navbar-nav ms-auto">
+        <ng-container *ngIf="currentUser; else loginLinks">
+          <li class="nav-item">
+            <a class="nav-link profile-link" routerLink="/profile" routerLinkActive="active">
+              <i class="bi bi-person-circle me-1"></i>
+              {{ currentUser.username }}
+            </a>
+          </li>
+        </ng-container>
+        
+        <ng-template #loginLinks>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/login" routerLinkActive="active" (click)="isMenuCollapsed = true">Login</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/register" routerLinkActive="active" (click)="isMenuCollapsed = true">Register</a>
+          </li>
+        </ng-template>
+      </ul>
+    </div>
+  </div>
+</nav>

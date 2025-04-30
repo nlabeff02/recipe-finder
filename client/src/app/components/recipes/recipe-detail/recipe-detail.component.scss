@@ -1,0 +1,124 @@
+.recipe-detail {
+  h1 {
+    font-weight: 600;
+  }
+  
+  .recipe-badges {
+    .badge {
+      font-size: 0.75rem;
+      padding: 0.5em 0.75em;
+    }
+  }
+  
+  .recipe-actions {
+    margin-top: 1rem;
+    
+    @media (min-width: 768px) {
+      margin-top: 0;
+    }
+  }
+  
+  .recipe-image-container {
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    
+    img {
+      width: 100%;
+      display: block;
+    }
+  }
+  
+  .recipe-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+    
+    .stat-card {
+      background-color: #f8f9fa;
+      border-radius: 8px;
+      padding: 1rem;
+      display: flex;
+      align-items: center;
+      
+      .stat-icon {
+        font-size: 1.5rem;
+        color: var(--primary-color);
+        margin-right: 0.75rem;
+      }
+      
+      .stat-content {
+        .stat-label {
+          font-size: 0.8rem;
+          color: #6c757d;
+        }
+        
+        .stat-value {
+          font-weight: 600;
+          font-size: 1.1rem;
+        }
+      }
+    }
+  }
+  
+  .nutrition-info {
+    h3 {
+      font-size: 1.4rem;
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+    
+    .nutrition-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      gap: 1rem;
+      
+      .nutrient-card {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 1rem;
+        text-align: center;
+        
+        .nutrient-value {
+          font-weight: 600;
+          font-size: 1.3rem;
+          color: var(--primary-color);
+        }
+        
+        .nutrient-label {
+          font-size: 0.9rem;
+          color: #6c757d;
+          margin-top: 0.25rem;
+        }
+      }
+    }
+  }
+  
+  .ingredient-list {
+    h3 {
+      font-size: 1.4rem;
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+    
+    ul {
+      padding-left: 1.25rem;
+      
+      li {
+        margin-bottom: 0.5rem;
+        padding-left: 0.5rem;
+      }
+    }
+  }
+  
+  .saved-info {
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin-top: 2rem;
+    
+    i {
+      color: var(--primary-color);
+      margin-right: 0.3rem;
+    }
+  }
+}

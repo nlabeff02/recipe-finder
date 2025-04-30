@@ -1,0 +1,139 @@
+<div class="container mt-4">
+  <div class="row mb-4">
+    <div class="col-md-8">
+      <h1>User Management</h1>
+      <p class="text-muted">Manage users and their permissions</p>
+    </div>
+  </div>
+
+  <!-- Error Message -->
+  <div *ngIf="error" class="alert alert-danger mb-4">
+    {{error}}
+  </div>
+
+  <!-- Loading Indicator -->
+  <div *ngIf="loading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="mt-3">Loading users...</p>
+  </div>
+
+  <!-- User Management Panel -->
+  <div *ngIf="!loading" class="user-management-panel card shadow-sm">
+    <div class="card-body">
+      <!-- Search and Filter -->
+      <div class="row mb-4">
+        <div class="col-md-6">
+          <form (submit)="submitSearch($event)" class="search-form">
+            <div class="input-group">
+              <span class="input-group-text">
+                <i class="bi bi-search"></i>
+              </span>
+              <input 
+                type="text" 
+                class="form-control" 
+                placeholder="Search users by username or email"
+                [(ngModel)]="searchInput"
+                name="searchTerm"
+              >
+              <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+          </form>
+        </div>
+        <div class="col-md-6 text-md-end">
+          <span class="text-muted me-2">Total users: {{ totalUsers }}</span>
+        </div>
+      </div>
+
+      <!-- Users Table -->
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col" class="sortable" (click)="setSorting('username')">
+                Username <i class="bi" [ngClass]="getSortIcon('username')"></i>
+              </th>
+              <th scope="col" class="sortable" (click)="setSorting('email')">
+                Email <i class="bi" [ngClass]="getSortIcon('email')"></i>
+              </th>
+              <th scope="col" class="sortable" (click)="setSorting('role')">
+                Role <i class="bi" [ngClass]="getSortIcon('role')"></i>
+              </th>
+              <th scope="col" class="sortable" (click)="setSorting('status')">
+                Status <i class="bi" [ngClass]="getSortIcon('status')"></i>
+              </th>
+              <th scope="col" class="sortable" (click)="setSorting('createdAt')">
+                Created <i class="bi" [ngClass]="getSortIcon('createdAt')"></i>
+              </th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let user of filteredUsers">
+              <td>{{ user.username }}</td>
+              <td>{{ user.email }}</td>
+              <td>
+                <span class="badge" [ngClass]="{'bg-primary': user.role === 'admin', 'bg-secondary': user.role === 'user'}">
+                  {{ user.role }}
+                </span>
+              </td>
+              <td>
+                <span class="badge" [ngClass]="{'bg-success': user.active, 'bg-danger': !user.active}">
+                  {{ user.active ? 'Active' : 'Inactive' }}
+                </span>
+              </td>
+              <td>{{ user.createdAt | date:'medium' }}</td>
+              <td>
+                <div class="btn-group">
+                  <a [routerLink]="['/admin/users', user._id]" class="btn btn-sm btn-outline-primary">
+                    <i class="bi bi-pencil"></i>
+                  </a>
+                  <button class="btn btn-sm" [ngClass]="{'btn-outline-danger': user.active, 'btn-outline-success': !user.active}" (click)="toggleUserStatus(user)">
+                    <i class="bi" [ngClass]="{'bi-x-circle': user.active, 'bi-check-circle': !user.active}"></i>
+                  </button>
+                  <button class="btn btn-sm btn-outline-danger" (click)="deleteUser(user)">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <nav *ngIf="totalPages > 1" aria-label="User pagination">
+        <ul class="pagination justify-content-center">
+          <li class="page-item" [class.disabled]="currentPage === 1">
+            <a class="page-link" href="javascript:void(0)" (click)="goToPage(currentPage - 1)">
+              <i class="bi bi-chevron-left"></i>
+            </a>
+          </li>
+          
+          <ng-container *ngFor="let page of [].constructor(totalPages); let i = index">
+            <li class="page-item" [class.active]="currentPage === i + 1" *ngIf="i + 1 === 1 || i + 1 === totalPages || (i + 1 >= currentPage - 1 && i + 1 <= currentPage + 1)">
+              <a class="page-link" href="javascript:void(0)" (click)="goToPage(i + 1)">
+                {{ i + 1 }}
+              </a>
+            </li>
+            
+            <li *ngIf="i + 1 === 2 && currentPage > 3" class="page-item disabled">
+              <a class="page-link" href="javascript:void(0)">...</a>
+            </li>
+            
+            <li *ngIf="i + 1 === totalPages - 1 && currentPage < totalPages - 2" class="page-item disabled">
+              <a class="page-link" href="javascript:void(0)">...</a>
+            </li>
+          </ng-container>
+          
+          <li class="page-item" [class.disabled]="currentPage === totalPages">
+            <a class="page-link" href="javascript:void(0)" (click)="goToPage(currentPage + 1)">
+              <i class="bi bi-chevron-right"></i>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>

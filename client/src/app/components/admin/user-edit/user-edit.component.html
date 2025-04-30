@@ -1,0 +1,181 @@
+<div class="container mt-4">
+  <!-- Loading Indicator -->
+  <div *ngIf="loading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="mt-3">Loading user details...</p>
+  </div>
+
+  <!-- Error Message -->
+  <div *ngIf="error" class="alert alert-danger mb-4">
+    {{error}}
+  </div>
+
+  <!-- User Not Found -->
+  <div *ngIf="!loading && !user && !error" class="text-center py-5">
+    <div class="mb-4">
+      <i class="bi bi-emoji-frown" style="font-size: 3rem;"></i>
+    </div>
+    <h3>User Not Found</h3>
+    <p class="text-muted">The user you're looking for could not be found</p>
+    <a routerLink="/admin" class="btn btn-primary mt-3">
+      Back to User Management
+    </a>
+  </div>
+
+  <!-- User Edit Form -->
+  <div *ngIf="!loading && user" class="user-edit">
+    <!-- Navigation Links -->
+    <div class="mb-4">
+      <a routerLink="/admin" class="btn btn-outline-secondary back-link">
+        <i class="bi bi-arrow-left"></i> Back to User Management
+      </a>
+    </div>
+
+    <!-- User Form -->
+    <div class="card shadow-sm">
+      <div class="card-header bg-primary text-white">
+        <h4 class="mb-0">Edit User</h4>
+      </div>
+      <div class="card-body">
+        <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+          <div class="row">
+            <!-- Basic Info -->
+            <div class="col-md-6">
+              <h5 class="mb-3">Basic Information</h5>
+              
+              <!-- Username -->
+              <div class="mb-3">
+                <label for="username" class="form-label">Username</label>
+                <input
+                  type="text"
+                  formControlName="username"
+                  class="form-control"
+                  [ngClass]="{ 'is-invalid': userForm.get('username')?.invalid && userForm.get('username')?.touched }"
+                  id="username"
+                >
+                <div *ngIf="userForm.get('username')?.invalid && userForm.get('username')?.touched" class="invalid-feedback">
+                  <div *ngIf="userForm.get('username')?.errors?.['required']">Username is required</div>
+                  <div *ngIf="userForm.get('username')?.errors?.['minlength']">Username must be at least 3 characters</div>
+                </div>
+              </div>
+              
+              <!-- Email -->
+              <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input
+                  type="email"
+                  formControlName="email"
+                  class="form-control"
+                  [ngClass]="{ 'is-invalid': userForm.get('email')?.invalid && userForm.get('email')?.touched }"
+                  id="email"
+                >
+                <div *ngIf="userForm.get('email')?.invalid && userForm.get('email')?.touched" class="invalid-feedback">
+                  <div *ngIf="userForm.get('email')?.errors?.['required']">Email is required</div>
+                  <div *ngIf="userForm.get('email')?.errors?.['email']">Please enter a valid email</div>
+                </div>
+              </div>
+              
+              <!-- Password (optional) -->
+              <div class="mb-3">
+                <label for="password" class="form-label">Password (leave blank to keep unchanged)</label>
+                <input
+                  type="password"
+                  formControlName="password"
+                  class="form-control"
+                  id="password"
+                >
+                <div class="form-text">
+                  Only fill this if you want to change the password.
+                </div>
+              </div>
+              
+              <!-- Role -->
+              <div class="mb-3">
+                <label for="role" class="form-label">Role</label>
+                <select
+                  formControlName="role"
+                  class="form-select"
+                  id="role"
+                >
+                  <option value="user">User</option>
+                  <option value="admin">Admin</option>
+                </select>
+              </div>
+              
+              <!-- Active Status -->
+              <div class="mb-3 form-check">
+                <input
+                  type="checkbox"
+                  formControlName="active"
+                  class="form-check-input"
+                  id="active"
+                >
+                <label class="form-check-label" for="active">Active Account</label>
+              </div>
+            </div>
+            
+            <!-- Preferences -->
+            <div class="col-md-6">
+              <h5 class="mb-3">Preferences</h5>
+              
+              <!-- Dietary Preferences -->
+              <div class="mb-3" formGroupName="preferences">
+                <label class="form-label">Dietary Preferences</label>
+                <div class="preferences-grid">
+                  <div *ngFor="let preference of dietaryPreferences" class="preference-item">
+                    <div class="form-check">
+                      <input 
+                        class="form-check-input" 
+                        type="checkbox"
+                        [checked]="isSelected('dietaryPreferences', preference)"
+                        (change)="togglePreference('dietaryPreferences', preference)"
+                        id="pref-{{preference}}" 
+                      >
+                      <label class="form-check-label" for="pref-{{preference}}">
+                        {{preference}}
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Allergies -->
+              <div class="mb-3" formGroupName="preferences">
+                <label class="form-label">Allergies</label>
+                <div class="preferences-grid">
+                  <div *ngFor="let allergy of allergies" class="preference-item">
+                    <div class="form-check">
+                      <input 
+                        class="form-check-input" 
+                        type="checkbox"
+                        [checked]="isSelected('allergies', allergy)"
+                        (change)="togglePreference('allergies', allergy)"
+                        id="allergy-{{allergy}}" 
+                      >
+                      <label class="form-check-label" for="allergy-{{allergy}}">
+                        {{allergy}}
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Form Actions -->
+          <div class="d-flex justify-content-end mt-4">
+            <a routerLink="/admin" class="btn btn-outline-secondary me-2">
+              Cancel
+            </a>
+            <button type="submit" class="btn btn-primary" [disabled]="userForm.invalid || submitting">
+              <span *ngIf="submitting" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+              Save Changes
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

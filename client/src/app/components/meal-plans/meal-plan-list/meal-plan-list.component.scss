@@ -1,0 +1,95 @@
+.week-selector {
+  background-color: #f8f9fa;
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.selected-meal-plan {
+  .week-view {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 1rem;
+    
+    @media (max-width: 1200px) {
+      grid-template-columns: repeat(7, 1fr);
+      overflow-x: auto;
+      padding-bottom: 1rem;
+    }
+    
+    .day-column {
+      min-width: 130px;
+      
+      .day-header {
+        font-weight: 600;
+        padding: 0.5rem;
+        background-color: #f8f9fa;
+        border-radius: 5px;
+        text-align: center;
+        margin-bottom: 0.75rem;
+      }
+      
+      .meals {
+        .meal-row {
+          display: flex;
+          align-items: flex-start;
+          margin-bottom: 0.75rem;
+          
+          .meal-icon {
+            flex-shrink: 0;
+            width: 24px;
+            color: var(--primary-color);
+          }
+          
+          .meal-content {
+            font-size: 0.85rem;
+            flex-grow: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            
+            &.empty-meal {
+              color: #6c757d;
+              font-style: italic;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.all-meal-plans {
+  .meal-plan-card {
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+    
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    &.selected {
+      border: 2px solid var(--primary-color);
+      transform: translateY(-5px);
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .card-body {
+      padding: 1rem;
+    }
+    
+    .card-title {
+      font-size: 1rem;
+      font-weight: 600;
+    }
+    
+    .card-text {
+      font-size: 0.9rem;
+      color: #6c757d;
+    }
+  }
+}

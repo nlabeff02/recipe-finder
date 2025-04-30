@@ -1,0 +1,170 @@
+<div class="container mt-4">
+  <!-- Loading Indicator -->
+  <div *ngIf="loading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="mt-3">Loading recipe details...</p>
+  </div>
+
+  <!-- Error Message -->
+  <div *ngIf="error" class="alert alert-danger mb-4">
+    {{error}}
+  </div>
+
+  <!-- Recipe Not Found -->
+  <div *ngIf="!loading && !recipe && !error" class="text-center py-5">
+    <div class="mb-4">
+      <i class="bi bi-emoji-frown" style="font-size: 3rem;"></i>
+    </div>
+    <h3>Recipe Not Found</h3>
+    <p class="text-muted">The recipe you're looking for could not be found</p>
+    <a routerLink="/recipes/saved" class="btn btn-primary mt-3">
+      Back to Saved Recipes
+    </a>
+  </div>
+
+  <!-- Recipe Details -->
+  <div *ngIf="recipe" class="recipe-detail">
+    <!-- Navigation Links -->
+    <div class="mb-4">
+      <a routerLink="/recipes/saved" class="text-decoration-none">
+        <i class="bi bi-arrow-left"></i> Back to Saved Recipes
+      </a>
+    </div>
+
+    <!-- Recipe Header -->
+    <div class="row mb-4">
+      <div class="col-md-8">
+        <h1 class="mb-2">{{recipe.title}}</h1>
+        <p class="text-muted mb-3">
+          <span *ngIf="recipe.source">From {{recipe.source}}</span>
+        </p>
+        
+        <!-- Recipe Badges -->
+        <div class="recipe-badges mb-3">
+          <span *ngFor="let label of recipe.dietLabels" class="badge bg-success me-2 mb-2">
+            {{label}}
+          </span>
+          <span *ngFor="let label of recipe.healthLabels" class="badge bg-info me-2 mb-2">
+            {{label}}
+          </span>
+        </div>
+      </div>
+      
+      <div class="col-md-4 text-md-end">
+        <div class="recipe-actions">
+          <ng-container *ngIf="isFromSearch; else savedActions">
+            <button class="btn btn-primary me-2" (click)="saveRecipe()">
+              <i class="bi bi-bookmark-plus"></i> Save Recipe
+            </button>
+          </ng-container>
+          
+          <ng-template #savedActions>
+            <button class="btn btn-danger me-2" (click)="deleteRecipe()">
+              <i class="bi bi-trash"></i> Remove
+            </button>
+            <button class="btn btn-primary me-2" (click)="addToMealPlan()">
+              <i class="bi bi-calendar-plus"></i> Add to Meal Plan
+            </button>
+          </ng-template>
+          
+          <a [href]="recipe.sourceUrl" target="_blank" class="btn btn-outline-secondary">
+            <i class="bi bi-box-arrow-up-right"></i> View Original
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <!-- Recipe Image -->
+      <div class="col-md-5 mb-4">
+        <div class="recipe-image-container">
+          <img [src]="recipe.image" [alt]="recipe.title" class="img-fluid rounded">
+        </div>
+        
+        <!-- Recipe Stats -->
+        <div class="recipe-stats mt-3">
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="bi bi-clock"></i>
+            </div>
+            <div class="stat-content">
+              <div class="stat-label">Time</div>
+              <div class="stat-value">{{recipe.totalTime ? recipe.totalTime + ' min' : 'N/A'}}</div>
+            </div>
+          </div>
+          
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="bi bi-fire"></i>
+            </div>
+            <div class="stat-content">
+              <div class="stat-label">Calories</div>
+              <div class="stat-value">{{recipe.calories || 'N/A'}}</div>
+            </div>
+          </div>
+          
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="bi bi-list-check"></i>
+            </div>
+            <div class="stat-content">
+              <div class="stat-label">Ingredients</div>
+              <div class="stat-value">{{recipe.ingredients.length || 0}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Recipe Details -->
+      <div class="col-md-7">
+        <!-- Nutrition Information -->
+        <div class="nutrition-info mb-4">
+          <h3>Nutrition Information</h3>
+          <div class="nutrition-grid">
+            <div class="nutrient-card" *ngIf="recipe.nutrients && recipe.nutrients.protein">
+              <div class="nutrient-value">{{recipe.nutrients.protein}}g</div>
+              <div class="nutrient-label">Protein</div>
+            </div>
+            
+            <div class="nutrient-card" *ngIf="recipe.nutrients && recipe.nutrients.carbs">
+              <div class="nutrient-value">{{recipe.nutrients.carbs}}g</div>
+              <div class="nutrient-label">Carbs</div>
+            </div>
+            
+            <div class="nutrient-card" *ngIf="recipe.nutrients && recipe.nutrients.fat">
+              <div class="nutrient-value">{{recipe.nutrients.fat}}g</div>
+              <div class="nutrient-label">Fat</div>
+            </div>
+            
+            <div class="nutrient-card" *ngIf="recipe.nutrients && recipe.nutrients['fiber']">
+              <div class="nutrient-value">{{recipe.nutrients['fiber']}}g</div>
+              <div class="nutrient-label">Fiber</div>
+            </div>
+            
+            <div class="nutrient-card" *ngIf="recipe.nutrients && recipe.nutrients['sugar']">
+              <div class="nutrient-value">{{recipe.nutrients['sugar']}}g</div>
+              <div class="nutrient-label">Sugar</div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Ingredients -->
+        <div class="ingredient-list mb-4">
+          <h3>Ingredients</h3>
+          <ul>
+            <li *ngFor="let ingredient of recipe.ingredients">
+              {{ingredient}}
+            </li>
+          </ul>
+        </div>
+        
+        <!-- Saved Info -->
+        <div *ngIf="!isFromSearch && recipe.savedAt" class="saved-info">
+          <i class="bi bi-bookmark-check"></i> Saved on {{recipe.savedAt | date:'medium'}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

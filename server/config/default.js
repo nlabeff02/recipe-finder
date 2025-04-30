@@ -1,0 +1,7 @@
+module.exports = {
+  jwtSecret: process.env.JWT_SECRET || 'e5e82ef2192396fc7285a5fd8cccdd90af3326afeaaf67f9e395bb93bbdfb0d418773edf18495b105e6d13a291e848fcdda5a3fa5f1792c8e2be134dcb2a17717dec7b4b228c095ca2f2900865209bacf4f019e3fc2edad30b79ae99009c859eacad10de1fc6788275b9a7e878d2fc6c3952b612053c86e7f826ac0bca6d6a09f2943030717791c92375309ef44cbfa6b520c5b3e3bf64130cde800b50f092e07e1a8cc0ed6407656410443635b756dee68ba36258e2af0451359f9ffad2116b2d261bdf79fdaa7c0975f7ebeec61b55f6ad9b7e2cf9b15bfd45d80d9f27904498f93a6ffabd4672eb25448a2ce68dd2d4b623499621f55803d619d5ab9ce350',
+  edamamApiId: process.env.EDAMAM_API_ID || '89fcb55f',
+  edamamApiKey: process.env.EDAMAM_API_KEY || '64c8f45e180e57c28b83b2261865c78c',
+  edamamBaseUrl: 'https://api.edamam.com',
+  edamamEndpoint: '/api/recipes/v2'
+};

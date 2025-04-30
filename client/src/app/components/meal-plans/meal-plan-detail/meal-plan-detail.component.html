@@ -1,0 +1,206 @@
+<div class="container mt-4">
+  <!-- Loading Indicator -->
+  <div *ngIf="loading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="mt-3">Loading your meal plan...</p>
+  </div>
+
+  <!-- Error Message -->
+  <div *ngIf="error" class="alert alert-danger mb-4">
+    {{error}}
+  </div>
+
+  <!-- Meal Plan Not Found -->
+  <div *ngIf="!loading && !mealPlan && !error" class="text-center py-5">
+    <div class="mb-4">
+      <i class="bi bi-emoji-frown" style="font-size: 3rem;"></i>
+    </div>
+    <h3>Meal Plan Not Found</h3>
+    <p class="text-muted">The meal plan you're looking for could not be found</p>
+    <a routerLink="/meal-plans" class="btn btn-primary mt-3">
+      Back to Meal Plans
+    </a>
+  </div>
+
+  <!-- Meal Plan Details -->
+  <div *ngIf="mealPlan" class="meal-plan-details">
+    <!-- Navigation Links -->
+    <div class="mb-4">
+      <a routerLink="/meal-plans" class="text-decoration-none">
+        <i class="bi bi-arrow-left"></i> Back to Meal Plans
+      </a>
+    </div>
+
+    <!-- Meal Plan Header -->
+    <div class="meal-plan-header mb-4">
+      <h1>Weekly Meal Plan</h1>
+      <p class="text-muted">Week of {{ formatDate(mealPlan.weekStartDate) }}</p>
+    </div>
+
+    <!-- Days Grid -->
+    <div class="meal-plan-grid">
+      <div class="day-column" *ngFor="let day of mealPlan.days; let dayIndex = index">
+        <div class="day-header">
+          <h3>{{ day.day }}</h3>
+        </div>
+        
+        <!-- Breakfast -->
+        <div class="meal-slot">
+          <div class="meal-label">
+            <i class="bi bi-sunrise"></i> Breakfast
+          </div>
+          
+          <div *ngIf="day.breakfast && getRecipeById(day.breakfast)" class="meal-recipe">
+            <div class="recipe-card">
+              <img 
+                [src]="getRecipeById(day.breakfast)?.image" 
+                [alt]="getRecipeById(day.breakfast)?.title" 
+                class="recipe-image"
+              >
+              <div class="recipe-details">
+                <h4>{{ getRecipeById(day.breakfast)?.title }}</h4>
+              </div>
+              <button class="remove-meal-btn" (click)="removeRecipe(dayIndex, 'breakfast')">
+                <i class="bi bi-x"></i>
+              </button>
+            </div>
+          </div>
+          
+          <div *ngIf="!day.breakfast" class="empty-meal">
+            <button class="btn btn-outline-primary btn-sm" (click)="openRecipeSelector(dayIndex, 'breakfast')">
+              <i class="bi bi-plus-circle"></i> Add Breakfast
+            </button>
+          </div>
+        </div>
+        
+        <!-- Lunch -->
+        <div class="meal-slot">
+          <div class="meal-label">
+            <i class="bi bi-sun"></i> Lunch
+          </div>
+          
+          <div *ngIf="day.lunch && getRecipeById(day.lunch)" class="meal-recipe">
+            <div class="recipe-card">
+              <img 
+                [src]="getRecipeById(day.lunch)?.image" 
+                [alt]="getRecipeById(day.lunch)?.title" 
+                class="recipe-image"
+              >
+              <div class="recipe-details">
+                <h4>{{ getRecipeById(day.lunch)?.title }}</h4>
+              </div>
+              <button class="remove-meal-btn" (click)="removeRecipe(dayIndex, 'lunch')">
+                <i class="bi bi-x"></i>
+              </button>
+            </div>
+          </div>
+          
+          <div *ngIf="!day.lunch" class="empty-meal">
+            <button class="btn btn-outline-primary btn-sm" (click)="openRecipeSelector(dayIndex, 'lunch')">
+              <i class="bi bi-plus-circle"></i> Add Lunch
+            </button>
+          </div>
+        </div>
+        
+        <!-- Dinner -->
+        <div class="meal-slot">
+          <div class="meal-label">
+            <i class="bi bi-moon"></i> Dinner
+          </div>
+          
+          <div *ngIf="day.dinner && getRecipeById(day.dinner)" class="meal-recipe">
+            <div class="recipe-card">
+              <img 
+                [src]="getRecipeById(day.dinner)?.image" 
+                [alt]="getRecipeById(day.dinner)?.title" 
+                class="recipe-image"
+              >
+              <div class="recipe-details">
+                <h4>{{ getRecipeById(day.dinner)?.title }}</h4>
+              </div>
+              <button class="remove-meal-btn" (click)="removeRecipe(dayIndex, 'dinner')">
+                <i class="bi bi-x"></i>
+              </button>
+            </div>
+          </div>
+          
+          <div *ngIf="!day.dinner" class="empty-meal">
+            <button class="btn btn-outline-primary btn-sm" (click)="openRecipeSelector(dayIndex, 'dinner')">
+              <i class="bi bi-plus-circle"></i> Add Dinner
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recipe Selector Modal -->
+  <div class="recipe-selector-modal" *ngIf="showRecipeSelector">
+    <div class="modal-overlay" (click)="closeRecipeSelector()"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Select a Recipe</h4>
+        <button type="button" class="btn-close" (click)="closeRecipeSelector()"></button>
+      </div>
+      
+      <div class="modal-body">
+        <!-- Search Bar -->
+        <div class="search-bar mb-3">
+          <div class="input-group">
+            <span class="input-group-text">
+              <i class="bi bi-search"></i>
+            </span>
+            <input 
+              type="text" 
+              class="form-control" 
+              placeholder="Search your recipes"
+              (input)="searchRecipes($event)"
+            >
+          </div>
+        </div>
+        
+        <!-- No Saved Recipes -->
+        <div *ngIf="!recipesLoading && filteredRecipes.length === 0" class="text-center py-4">
+          <div *ngIf="searchTerm" class="no-results">
+            <p>No recipes match your search</p>
+          </div>
+          <div *ngIf="!searchTerm && savedRecipes.length === 0" class="no-recipes">
+            <p>You don't have any saved recipes</p>
+            <a routerLink="/recipes/search" class="btn btn-primary mt-2" (click)="closeRecipeSelector()">
+              Find Recipes
+            </a>
+          </div>
+        </div>
+        
+        <!-- Recipe List -->
+        <div *ngIf="!recipesLoading && filteredRecipes.length > 0" class="recipe-list">
+          <div class="recipe-item" *ngFor="let recipe of filteredRecipes" (click)="selectRecipe(recipe._id || '')">
+            <img [src]="recipe.image" [alt]="recipe.title" class="recipe-thumbnail">
+            <div class="recipe-info">
+              <h5>{{ recipe.title }}</h5>
+              <p *ngIf="recipe.calories" class="recipe-calories">
+                <i class="bi bi-fire"></i> {{ recipe.calories }} cal
+              </p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Loading Indicator -->
+        <div *ngIf="recipesLoading" class="text-center py-4">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading recipes...</span>
+          </div>
+          <p class="mt-2">Loading your recipes...</p>
+        </div>
+      </div>
+      
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeRecipeSelector()">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
